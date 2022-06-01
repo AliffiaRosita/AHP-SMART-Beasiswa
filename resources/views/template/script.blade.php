@@ -6,12 +6,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 <script src="{{asset('admin/assets/js/stisla.js')}}"></script>
 
-
+{{-- <script src="{{asset('admin/assets/js/page/modules-datatables.js')}}"></script> --}}
 
 <!-- Template JS File -->
 <script src="{{asset('admin/assets/js/scripts.js')}}"></script>
 <script src="{{asset('admin/assets/js/custom.js')}}"></script>
 
 <!-- Page Specific JS File -->
-<script src="{{asset('admin/assets/js/page/index-0.js')}}"></script>
+{{-- <script src="{{asset('admin/assets/js/page/index-0.js')}}"></script> --}}
 @stack('js')

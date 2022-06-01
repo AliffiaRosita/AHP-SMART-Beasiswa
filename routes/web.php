@@ -22,7 +22,7 @@ Route::get('/login',function(){
 });
 
 Route::get('/dashboard',function(){
-    return view('dashboard',[
+    return view('kriteria.index',[
         "title"=> 'Kriteria'
     ]);
 });
