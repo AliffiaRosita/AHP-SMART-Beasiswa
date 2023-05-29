@@ -1,17 +1,14 @@
 <aside id="sidebar-wrapper">
     <div class="sidebar-brand">
-      <a href="index.html">SPK Beasiswa</a>
+        <a href="index.html">SPK Beasiswa</a>
     </div>
     <div class="sidebar-brand sidebar-brand-sm">
-      <a href="index.html">SPK</a>
+        <a href="index.html">SPK</a>
     </div>
     <ul class="sidebar-menu">
-        <li class="menu-header">Master</li>
-        <li class="nav-item dropdown active">
-          <a href="#" class="nav-link "><i class="fas fa-fire"></i><span>Kriteria</span></a>
-          <a href="#" class="nav-link "><i class="fas fa-fire"></i><span>Alternatif</span></a>
-          
-        </li>
-
-      </ul>
-  </aside>
+        <li class="active"><a class="nav-link" href="{{route('dashboard')}}"><i class="fas fa-pencil-ruler"></i> <span>Dashboard</span></a></li>
+        <li class="menu-header">Data</li>
+        <li class=""><a class="nav-link" href="credits.html"><i class="fas fa-box"></i> <span>Kriteria</span></a></li>
+        <li class=""><a class="nav-link" href="credits.html"><i class="fas fa-users"></i> <span>Mahasiswa</span></a></li>
+    </ul>
+</aside>
