@@ -28,6 +28,6 @@ class KriteriaController extends Controller
             'nama'=>$request->nama,
             'kategori'=>$request->kategori,
         ]);
-        return view('kriteria.index')->with('status','Data periode berhasil diubah');
+        return redirect()->route('kriteria.index')->with('status','Data periode berhasil diubah');
     }
 }

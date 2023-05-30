@@ -17,6 +17,7 @@
                         <tr>
                             <th>No</th>
                             <th>Nama kriteria</th>
+                            <th>Kategori</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -26,6 +27,7 @@
                         <tr>
                             <td>{{$loop->iteration}}</td>
                             <td>{{$kriteria->nama}}</td>
+                            <td>{{$kriteria->kategori}}</td>
                             <td>
                                 <a href="{{route('kriteria.edit',['id'=>$kriteria->id])}}" class="btn btn-success ">Ubah</a>
                             </td>
