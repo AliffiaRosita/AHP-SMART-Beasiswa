@@ -13,4 +13,9 @@ class Kriteria extends Model
         'nama',
         'kategori',
     ];
+
+    public function mahasiwa()
+    {
+        return $this->belongsToMany(Mahasiswa::class, 'kriteria_mahasiswa', 'mahasiswa_id', 'kriteria_id')->withPivot('nilai');
+    }
 }

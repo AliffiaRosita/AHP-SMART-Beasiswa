@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KriteriaController;
+use App\Http\Controllers\MahasiswaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,4 +29,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/kriteria', [KriteriaController::class, 'index'])->name('kriteria.index');
     Route::get('/kriteria/{id}', [KriteriaController::class, 'edit'])->name('kriteria.edit');
     Route::put('/kriteria/{id}', [KriteriaController::class, 'update'])->name('kriteria.update');
+
+    Route::resource('mahasiswa', MahasiswaController::class);
 });
