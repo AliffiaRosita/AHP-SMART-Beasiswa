@@ -10,9 +10,6 @@
             @method('PUT')
             @csrf
             <div class="card">
-                <div class="card-header">
-                    <h4>Input Text</h4>
-                </div>
                 <div class="card-body">
                     <div class="form-group row">
                         <label for="nama" class="col-sm-2 col-form-label">Nama</label>
