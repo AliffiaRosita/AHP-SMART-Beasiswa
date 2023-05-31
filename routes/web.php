@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KriteriaController;
 use App\Http\Controllers\MahasiswaController;
+use App\Http\Controllers\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,13 +20,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
 
 require __DIR__.'/auth.php';
 
 Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/kriteria', [KriteriaController::class, 'index'])->name('kriteria.index');
     Route::get('/kriteria/{id}', [KriteriaController::class, 'edit'])->name('kriteria.edit');
     Route::put('/kriteria/{id}', [KriteriaController::class, 'update'])->name('kriteria.update');
