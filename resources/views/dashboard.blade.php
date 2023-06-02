@@ -2,10 +2,10 @@
 @section('content')
     <section class="section">
         <div class="section-header">
-            <h1>ANALISIS PENDUKUNG KEPUTUSAN BANTUAN BEASISWA CENDIKIA MENGGUNAKAN METODE AHP – MAUT </h1>
+            <h1>ANALISIS PENDUKUNG KEPUTUSAN BANTUAN BEASISWA CENDIKIA MENGGUNAKAN METODE AHP – SMART </h1>
           </div>
           <div class="row">
-              <form action="" method="post" class="form-horizontal">
+              <form action="{{route('perhitungan.hitungbobot')}}" method="post" class="form-horizontal">
                   @csrf
                   <div class="row">
                       @for ($i = 0; $i <= $jumlahkriteria - 2; $i++)

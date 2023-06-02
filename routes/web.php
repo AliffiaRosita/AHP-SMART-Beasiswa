@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KriteriaController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PerhitunganController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +26,9 @@ require __DIR__.'/auth.php';
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::post('/hitungbobot', [PerhitunganController::class, 'hitungbobot'])->name('perhitungan.hitungbobot');
+
     Route::get('/kriteria', [KriteriaController::class, 'index'])->name('kriteria.index');
     Route::get('/kriteria/{id}', [KriteriaController::class, 'edit'])->name('kriteria.edit');
     Route::put('/kriteria/{id}', [KriteriaController::class, 'update'])->name('kriteria.update');
