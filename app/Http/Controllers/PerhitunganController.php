@@ -111,8 +111,27 @@ class PerhitunganController extends Controller
         //     'consistencyRatio'=>round($consistencyRatio,7,PHP_ROUND_HALF_UP)
 
         // ]);
+        return view('analisa.hasilkriteria',
+            [
+                'kriterias'=>$kriteria,
+                'jumlahkriteria'=>$jumlahkriteria,
+                'matrikskriteria'=>$matrikskriteria,
+                'jmlpb'=>$jmlpb,
+                'matrikskriterianormal'=>$matrikskriterianormal,
+                'jmlpk'=>$jmlpk,
+                'eigenvalue'=>$eigenvalue,
+                'consistencyIndex'=>$consistencyIndex,
+                'consistencyRatio'=>$consistencyRatio,
+                'RiValue'=>$RiValue,
+            ]
+        );
 
+    }
+
+    public function rangking()
+    {
         // PERHITUNGAN S-M-A-R-T
+        $jumlahkriteria = Kriteria::count();
 
         // 1. Mencari nilai minimum dan nilai maksimum masing-masing kriteria
         for ($i=1; $i <= $jumlahkriteria; $i++) {
