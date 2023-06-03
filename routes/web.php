@@ -17,9 +17,7 @@ use App\Http\Controllers\PerhitunganController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::redirect('/', '/dashboard', 301);
 
 
 require __DIR__.'/auth.php';
