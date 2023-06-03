@@ -147,6 +147,7 @@ class PerhitunganController extends Controller
 
         // PERHITUNGAN S-M-A-R-T
         $jumlahkriteria = Kriteria::count();
+        $kriteria = Kriteria::all();
         // $riwayatPerhitungan = RiwayatPerhitungan::findOrFail($riwayatPerhitunganId);
         $hasilBobot = HasilBobot::where('riwayat_perhitungan_id',$riwayatPerhitunganId)->get();
 
@@ -187,7 +188,15 @@ class PerhitunganController extends Controller
         $rangkings = Rangking::where('riwayat_perhitungan_id',$riwayatPerhitunganId)->orderBy('hasil','DESC')->get();
 
 
-        
+        return view('analisa.hasilrangking',[
+            'kriterias'=>$kriteria,
+            'semuaMahasiswa'=>$semuaMahasiswa,
+            'tabelUtility'=>$tabelUtility,
+            'tabelNilaiAkhir'=>$tabelNilaiAkhir,
+            'hasil'=>$hasil,
+            'hasilBobot'=>$hasilBobot,
+            'rangkings'=>$rangkings,
+        ]);
         // dd([$nilaiMin,$nilaiMax,$semuaMahasiswa[0]->kriteria,$tabelUtility,$tabelNilaiAkhir,$hasil,$rangkings]);
     }
 }
