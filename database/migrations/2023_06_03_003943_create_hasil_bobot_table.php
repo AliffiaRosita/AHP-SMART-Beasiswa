@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRangkingsTable extends Migration
+class CreateHasilBobotTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateRangkingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('rangkings', function (Blueprint $table) {
+        Schema::create('hasil_bobot', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('mahasiswa_id')->constrained('mahasiswa')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('kriteria_id')->constrained('kriteria')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('riwayat_perhitungan_id')->constrained('riwayat_perhitungan')->onUpdate('cascade')->onDelete('cascade');
-            $table->double('hasil', 8, 7);
+            $table->double('nilai', 8, 7);
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ class CreateRangkingsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('rangkings');
+        Schema::dropIfExists('hasil_bobot');
     }
 }

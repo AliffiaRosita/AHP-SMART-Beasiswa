@@ -28,7 +28,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::post('/hitungbobot', [PerhitunganController::class, 'hitungbobot'])->name('perhitungan.hitungbobot');
-    Route::get('/rangking', [PerhitunganController::class, 'rangking'])->name('perhitungan.rangking');
+    Route::get('/rangking/{id}', [PerhitunganController::class, 'rangking'])->name('perhitungan.rangking');
 
     Route::get('/kriteria', [KriteriaController::class, 'index'])->name('kriteria.index');
     Route::get('/kriteria/{id}', [KriteriaController::class, 'edit'])->name('kriteria.edit');

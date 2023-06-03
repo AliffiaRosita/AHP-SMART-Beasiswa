@@ -10,7 +10,8 @@ class Rangking extends Model
     use HasFactory;
     protected $fillable = [
         'mahasiswa_id',
-        'hasil'
+        'hasil',
+        'riwayat_perhitungan_id'
     ];
 
     /**

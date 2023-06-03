@@ -7,6 +7,9 @@ use App\Models\Kriteria;
 use App\Models\Mahasiswa;
 use Illuminate\Support\Facades\DB;
 use App\Models\Rangking;
+use App\Models\RiwayatPerhitungan;
+use App\Models\PerbandinganBerpasangan;
+use App\Models\HasilBobot;
 
 class PerhitunganController extends Controller
 {
@@ -14,6 +17,9 @@ class PerhitunganController extends Controller
     {
         $jumlahkriteria = Kriteria::count();
         $kriteria = Kriteria::all();
+
+        $riwayatPerhitungan = RiwayatPerhitungan::create();
+
         $matrikskriteria = [];
         $urut = 0;
         for ($x=0; $x <= ($jumlahkriteria - 2); $x++) {
@@ -29,17 +35,17 @@ class PerhitunganController extends Controller
                     $matrikskriteria[$y][$x] = $bobot;
                 }
 
-                // Perbandingankriteria::updateOrCreate(
-                //     [
-                //         'criteria1_id' => $kriteria[$x]->id,
-                //         'criteria2_id' => $kriteria[$y]->id,
-                //         'user_id' =>1
-                //     ],
-                //     [
+                PerbandinganBerpasangan::updateOrCreate(
+                    [
+                        'kriteria1_id' => $kriteria[$x]->id,
+                        'kriteria2_id' => $kriteria[$y]->id,
+                        'riwayat_perhitungan_id' =>$riwayatPerhitungan->id,
+                    ],
+                    [
 
-                //         'nilai'=> $matrikskriteria[$x][$y],
-                //     ]
-                // );
+                        'nilai'=> $matrikskriteria[$x][$y],
+                    ]
+                );
             }
         }
 
@@ -88,16 +94,22 @@ class PerhitunganController extends Controller
         }
 
         // perulanagan menghitung bobot (pvector/jumlahkriteria)
-
         for ($i=0; $i <= ($jumlahkriteria - 1); $i++) {
             $bobotKriteria[$i] = round(($jmlpb[$i]/$jumlahkriteria),7,PHP_ROUND_HALF_UP) ;
             $eigenvalue[$i] = round(($bobotKriteria[$i] * $jmlpk[$i]),7,PHP_ROUND_HALF_UP);
+            HasilBobot::updateOrCreate(
+                    ['riwayat_perhitungan_id' =>$riwayatPerhitungan->id,'kriteria_id' => $kriteria[$i]->id],
+                    ['nilai'=>$bobotKriteria[$i]]
+            );
         }
 
         $consistencyIndex = round((array_sum($eigenvalue) - $jumlahkriteria)/($jumlahkriteria - 1),7,PHP_ROUND_HALF_UP) ;
         $RiValue = 0.9;
 
         $consistencyRatio = round( $consistencyIndex/ $RiValue,7,PHP_ROUND_HALF_UP);
+        if ($consistencyRatio > 0.1) {
+            $riwayatPerhitungan->delete();
+        }
         // dd([
         //     'kriterias'=>$kriteria,
         //     'jumlahkriteria'=>$jumlahkriteria,
@@ -123,15 +135,20 @@ class PerhitunganController extends Controller
                 'consistencyIndex'=>$consistencyIndex,
                 'consistencyRatio'=>$consistencyRatio,
                 'RiValue'=>$RiValue,
+                'bobotKriteria'=>$bobotKriteria,
+                'riwayatPerhitungan'=>$riwayatPerhitungan,
             ]
         );
 
     }
 
-    public function rangking()
+    public function rangking($riwayatPerhitunganId)
     {
+
         // PERHITUNGAN S-M-A-R-T
         $jumlahkriteria = Kriteria::count();
+        // $riwayatPerhitungan = RiwayatPerhitungan::findOrFail($riwayatPerhitunganId);
+        $hasilBobot = HasilBobot::where('riwayat_perhitungan_id',$riwayatPerhitunganId)->get();
 
         // 1. Mencari nilai minimum dan nilai maksimum masing-masing kriteria
         for ($i=1; $i <= $jumlahkriteria; $i++) {
@@ -155,22 +172,22 @@ class PerhitunganController extends Controller
                 }else{
                     $tabelUtility[$i][$j] = (($nilaiMax[$j]-$nilai->pivot->nilai)/($nilaiMax[$j]-$nilaiMin[$j]));
                 }
-                $tabelNilaiAkhir[$i][$j]=$tabelUtility[$i][$j]*$bobotKriteria[$j];
+                $tabelNilaiAkhir[$i][$j]=$tabelUtility[$i][$j]*$hasilBobot[$j]->nilai;
                 $hasil[$i] +=$tabelNilaiAkhir[$i][$j];
             }
         }
 
         // 4. Simpan Hasil dan lakukan Sort untuk menentukan Rangking
-        // for ($i=0; $i < count($semuaMahasiswa); $i++) {
-        //     Rangking::create([
-        //         'mahasiswa_id'=>$semuaMahasiswa[$i]->id,
-        //         'hasil'=>$hasil[$i],
-        //     ]);
-        // }
-            $rangkings = Rangking::orderBy('hasil','DESC')->get();
+        for ($i=0; $i < count($semuaMahasiswa); $i++) {
+            Rangking::updateOrCreate(
+                ['riwayat_perhitungan_id'=>$riwayatPerhitunganId,'mahasiswa_id'=>$semuaMahasiswa[$i]->id,],
+                ['hasil'=>$hasil[$i],]
+            );
+        }
+        $rangkings = Rangking::where('riwayat_perhitungan_id',$riwayatPerhitunganId)->orderBy('hasil','DESC')->get();
 
 
-
-        dd([$nilaiMin,$nilaiMax,$semuaMahasiswa[0]->kriteria,$tabelUtility,$tabelNilaiAkhir,$hasil,$rangkings[0]->mahasiswa]);
+        
+        // dd([$nilaiMin,$nilaiMax,$semuaMahasiswa[0]->kriteria,$tabelUtility,$tabelNilaiAkhir,$hasil,$rangkings]);
     }
 }

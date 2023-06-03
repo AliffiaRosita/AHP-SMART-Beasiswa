@@ -59,6 +59,7 @@
                                         <th scope="col">{{ $kriteria->nama }}</th>
                                     @endforeach
                                     <th scope="col">priority vector</th>
+                                    <th scope="col">Bobot</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -69,20 +70,21 @@
                                             <td>{{ round($matrikskriterianormal[$y][$x], 3) }}</td>
                                         @endfor
                                         <td>{{ round($jmlpb[$x], 3) }}</td>
+                                        <td>{{ round($bobotKriteria[$x], 3) }}</td>
                                     </tr>
                                 @endfor
                             </tbody>
                             <thead class="thead-dark">
                                 <tr>
-                                    <th scope="col" colspan="{{ $jumlahkriteria + 1 }}">Nilai Eigen Value</th>
+                                    <th scope="col" colspan="{{ $jumlahkriteria + 2 }}">Nilai Eigen Value</th>
                                     <th scope="col">{{ round(array_sum($eigenvalue), 3) }}</th>
                                 </tr>
                                 <tr>
-                                    <th scope="col" colspan="{{ $jumlahkriteria + 1 }}">Random Index</th>
+                                    <th scope="col" colspan="{{ $jumlahkriteria + 2 }}">Random Index</th>
                                     <th scope="col">{{ round($RiValue, 3) }}</th>
                                 </tr>
                                 <tr>
-                                    <th scope="col" colspan="{{ $jumlahkriteria + 1 }}">Consistency Ratio</th>
+                                    <th scope="col" colspan="{{ $jumlahkriteria + 2 }}">Consistency Ratio</th>
                                     <th scope="col">{{ round($consistencyRatio, 3) }}</th>
                                 </tr>
                             </thead>
@@ -107,7 +109,7 @@
                         </button>
                     </div>
                     <div class="col-md-6 offset-md-3">
-                        <a href="{{route('perhitungan.rangking')}}" class="btn btn-outline-success btn-lg btn-block"><i
+                        <a href="{{route('perhitungan.rangking',['id'=>$riwayatPerhitungan->id])}}" class="btn btn-outline-success btn-lg btn-block"><i
                                 class="fa fa-location-arrow"></i>&nbsp;Lanjutkan</a>
                     </div>
                 @else
