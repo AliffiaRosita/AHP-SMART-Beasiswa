@@ -160,9 +160,42 @@ class PerhitunganController extends Controller
         $semuaMahasiswa = Mahasiswa::with('kriteria')->get();
 
 
+        // 3. Menentukan Nilai Utility,Tabel Akhir, dan Hasil
+        $tabelUtility = [];
+        $tabelNilaiAkhir = [];
+        $hasil = [];
+        foreach ($semuaMahasiswa as $i => $mahasiswa) {
+            $nilaiKriteriaMhs = $mahasiswa->kriteria;
+            $hasil[$i] = 0;
+            foreach ($nilaiKriteriaMhs as $j => $nilai) {
+                if ($nilai->kategori == 'benefit') {
+                    $tabelUtility[$i][$j] = (($nilai->pivot->nilai - $nilaiMin[$j]) / ($nilaiMax[$j] - $nilaiMin[$j]));
+                } else {
+                    $tabelUtility[$i][$j] = (($nilaiMax[$j] - $nilai->pivot->nilai) / ($nilaiMax[$j] - $nilaiMin[$j]));
+                }
+                $tabelNilaiAkhir[$i][$j] = $tabelUtility[$i][$j] * $hasilBobot[$j]->nilai;
+                $hasil[$i] += $tabelNilaiAkhir[$i][$j];
+            }
+        }
+
+        // 4. Simpan Hasil dan lakukan Sort untuk menentukan Rangking
+        for ($i = 0; $i < count($semuaMahasiswa); $i++) {
+            Rangking::updateOrCreate(
+                ['riwayat_perhitungan_id' => $riwayatPerhitunganId, 'mahasiswa_id' => $semuaMahasiswa[$i]->id,],
+                ['hasil' => $hasil[$i],]
+            );
+        }
+        $rangkings = Rangking::where('riwayat_perhitungan_id', $riwayatPerhitunganId)->orderBy('hasil', 'DESC')->get();
+
+
         return view('analisa.hasilrangking', [
             'kriterias' => $kriteria,
             'semuaMahasiswa' => $semuaMahasiswa,
+            'tabelUtility' => $tabelUtility,
+            'tabelNilaiAkhir' => $tabelNilaiAkhir,
+            'hasil' => $hasil,
+            'hasilBobot' => $hasilBobot,
+            'rangkings' => $rangkings,
         ]);
         // dd([$nilaiMin,$nilaiMax,$semuaMahasiswa[0]->kriteria,$tabelUtility,$tabelNilaiAkhir,$hasil,$rangkings]);
     }
